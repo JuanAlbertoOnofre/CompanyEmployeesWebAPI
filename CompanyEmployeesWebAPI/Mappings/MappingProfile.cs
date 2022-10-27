@@ -11,6 +11,9 @@ namespace CompanyEmployeesWebAPI.Mappings
             CreateMap<Company, CompanyDto>()
                     .ForMember(c => c.FullAddress,
                     opt => opt.MapFrom(x => string.Join("", x.Address, x.Country)));
+
+            //create another mapping rule
+            CreateMap<Employee, EmployeeDto>();
         }
     }
 }
