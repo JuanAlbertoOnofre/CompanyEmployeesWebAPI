@@ -101,7 +101,7 @@ namespace CompanyEmployeesWebAPI
             //Context service to the IOC right above(arriba) the Controller
             services.ConfigureSqlContext(Configuration);
 
-            //services.ConfigureRepositoryManager();
+            services.ConfigureRepositoryManager();
 
             services.AddAutoMapper(typeof(Startup));
 

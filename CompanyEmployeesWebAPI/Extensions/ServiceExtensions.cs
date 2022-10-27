@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Repository;
 
 ///
 ///An extension method is inherently a static method. What makes it
@@ -75,12 +76,6 @@ namespace CompanyEmployeesWebAPI.Extensions
         public static void ConfigureLoggerService(this IServiceCollection services) =>
             services.AddScoped<ILoggerManager, LoggerManager>();
 
-
-        //public static void ConfigureSqlContext(this IServiceCollection services,
-        //    IConfiguration configuration) =>
-        //    services.AddDbContext<RepositoryContext>(opts =>
-        //    opts.UseSqlServer());
-
         //to be able to use the UseSqlServer method, we need to install the Microsoft.EntityFrameworkCore.SqlServer
         public static void ConfigureSqlContext(this IServiceCollection services,
             IConfiguration configuration) =>
@@ -97,7 +92,7 @@ namespace CompanyEmployeesWebAPI.Extensions
         //Add-Migration DatabaseCreation
         //Para cargarlo a la DB
         //Update-Database
-        //public static void ConfigureRepositoryManager(this IServiceCollection services)=>
-        //    services.AddScoped<IRepositoryManager, IRepositoryManager>();
+        public static void ConfigureRepositoryManager(this IServiceCollection services)=>
+            services.AddScoped<IRepositoryManager, RepositoryManager>();
     }
 }
