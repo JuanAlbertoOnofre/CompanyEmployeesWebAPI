@@ -2,6 +2,7 @@
 using Contracts;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Hosting.Server;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -105,8 +106,19 @@ namespace CompanyEmployeesWebAPI
 
             services.AddAutoMapper(typeof(Startup));
 
-            services.AddControllers();
+            //services.AddControllers();
 
+            //Configure the controller to response in format XML
+
+            services.AddControllers(config =>
+            {
+                config.RespectBrowserAcceptHeader = true;
+                //restringir solo un formato
+                //the server that if the client tries to negotiate for the media type the
+                //server doesn’t support, it should return the 406 Not Acceptable status code
+                config.ReturnHttpNotAcceptable = true;
+            }).AddXmlDataContractSerializerFormatters()
+            .AddCustomCSVFormatter();
            
         }
 

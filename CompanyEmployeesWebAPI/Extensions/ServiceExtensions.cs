@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Repository;
+using System.Runtime.CompilerServices;
 
 ///
 ///An extension method is inherently a static method. What makes it
@@ -94,5 +95,9 @@ namespace CompanyEmployeesWebAPI.Extensions
         //Update-Database
         public static void ConfigureRepositoryManager(this IServiceCollection services)=>
             services.AddScoped<IRepositoryManager, RepositoryManager>();
+
+
+        public static IMvcBuilder AddCustomCSVFormatter(this IMvcBuilder builder) =>
+               builder.AddMvcOptions(config => config.OutputFormatters.Add(new CsvOutputFormatter())); 
     }
 }
