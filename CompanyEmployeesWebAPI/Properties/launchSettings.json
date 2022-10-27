@@ -1,0 +1,54 @@
+﻿{
+  "$schema": "http://json.schemastore.org/launchsettings.json",
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:3553",
+      "sslPort": 44303
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "CompanyEmployeesWebAPI": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "launchUrl": "weatherforecast",
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
+
+//Determina el comportamiento de inicio de las aplicaciones ASP.NET Core.
+//contiene ambas configuraciones para lanzar configuración para IIS y aplicaciones autohospedadas (Kestrel).
+// La propiedad launchBrowser a falso para evitar el navegador web desde el inicio de la aplicación
+//If you’ve checked Configure for HTTPS checkbox earlier in the setup
+//phase, you will end up with two URLs in the applicationUrl section — one
+//for HTTP, and one for HTTPS.
+//You’ll also notice the sslPort property which indicates that our
+//application, when running in IISExpress, will be configured for HTTPS
+//(port 44370)
+
+//Take note that this HTTPS configuration is only valid in
+//the local environment. You will have to configure a valid certificate and
+//HTTPS redirection once you deploy the application.
+
+//La propiedad launchUrl determina qué URL la aplicación navega inicialmente
+
+//Para que la propiedad launchUrl funcione, debemos
+//necesita establecer la propiedad launchBrowser en true
+
+//if we set the launchUrl property to weatherforecast, we will be redirected
+//to https://localhost:5001/weatherforecast when we launch our
+//application.
