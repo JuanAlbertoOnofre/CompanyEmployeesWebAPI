@@ -18,6 +18,8 @@ namespace CompanyEmployeesWebAPI.Mappings
             CreateMap<CompanyForCreatingDto, Company>();
 
             CreateMap<EmployeeForCreatingDto, Employee>();
+
+            CreateMap<EmployeeForUpdateDto, Employee>();
         }
     }
 }

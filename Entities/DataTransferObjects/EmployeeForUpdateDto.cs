@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Entities.DataTransferObjects
 {
-    internal class EmployeeForUpdateDto
+    public class EmployeeForUpdateDto
     {
+        public string Name { get; set; }
+        public int Age { get; set; }
+        public string Position { get; set; }
     }
 }

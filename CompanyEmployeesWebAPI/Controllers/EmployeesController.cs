@@ -46,7 +46,7 @@ namespace CompanyEmployeesWebAPI.Controllers
             }
         }
 
-        [HttpGet("{id}", Name = "GetEmployeeForCompany")] 
+        [HttpGet("{id}", Name = "GetEmployeeForCompany")]
         public IActionResult GetEmployeeForCompany(Guid companyId, Guid id)
         {
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
@@ -75,7 +75,7 @@ namespace CompanyEmployeesWebAPI.Controllers
             }
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
 
-            if (company == null) 
+            if (company == null)
             {
                 _logger.LogInfo($"Company with id:{companyId} doesn't exist in the database.");
                 return NotFound();
@@ -90,21 +90,47 @@ namespace CompanyEmployeesWebAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid id) 
+        public IActionResult DeleteEmployeeForCompany(Guid companyId, Guid id)
         {
             var company = _repository.Company.GetCompany(companyId, trackChanges: false);
-            if(company == null) 
+            if (company == null)
             {
                 _logger.LogInfo($"Company with id: {companyId} doesn't exist in the database.");
                 return NotFound();
             }
-            var employeeForCompay = _repository.Employee.GetEmployee(companyId, id, trackChanges:false);
-            if (employeeForCompay == null)  
+            var employeeForCompay = _repository.Employee.GetEmployee(companyId, id, trackChanges: false);
+            if (employeeForCompay == null)
             {
                 _logger.LogInfo($"Employee with id {id} doesn't exist in the database.");
                 return NotFound();
             }
             _repository.Employee.DeleteEmployee(employeeForCompay);
+            _repository.Save();
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateEmployeeForCompany(Guid companyId, Guid id, [FromBody] EmployeeForCreatingDto employee)
+        {
+            if (employee == null)
+            {
+                _logger.LogError("EmployeeForUpdateDto object sent fron client is null.");
+                return BadRequest("EmployeeForUpdateDto object is null");
+            }
+            var company = _repository.Company.GetCompany(companyId, trackChanges: false);
+
+            if(company == null) 
+            {
+                _logger.LogInfo($"Company with id: {companyId} doesn't exist in the database.");
+                return NotFound();
+            }
+            var employeeEntity = _repository.Employee.GetEmployee(companyId, id, trackChanges: true);
+            if(employeeEntity == null) 
+            {
+                _logger.LogInfo($"Employee with id {id} doesn't exist in the database.");
+                return NotFound();
+            }
+            _mapper.Map(employee, employeeEntity);
             _repository.Save();
             return NoContent();
         }
