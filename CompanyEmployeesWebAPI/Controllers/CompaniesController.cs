@@ -15,6 +15,7 @@ using AutoMapper;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using Entities.Models;
+using CompanyEmployeesWebAPI.ModelBinders;
 
 namespace CompanyEmployeesWebAPI.Controllers
 {
@@ -117,7 +118,8 @@ namespace CompanyEmployeesWebAPI.Controllers
         }
 
         [HttpGet("collection/({ids})", Name = "CompanyCollection")]
-        public IActionResult GetCompanyCollection (IEnumerable<Guid> ids) 
+                                                   //to Unsuppoted Media Type
+        public IActionResult GetCompanyCollection ([ModelBinder(binderType:typeof(ArrayModelBinder))]IEnumerable<Guid> ids) 
         {
             if (ids == null) 
             {
@@ -156,6 +158,21 @@ namespace CompanyEmployeesWebAPI.Controllers
             var companyCollectionToReturn = _mapper.Map<IEnumerable<CompanyDto>>(companyEntities);
             var ids = string.Join(",", companyCollectionToReturn.Select(c => c.Id));
             return CreatedAtRoute("CompanyCollection", new {ids}, companyCollectionToReturn);
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteCompany(Guid id) 
+        {
+            var company = _repository.Company.GetCompany(id, trackChanges: false);
+            if (company == null) 
+            {
+                _logger.LogInfo($"Company with id: {id} doesn´t exist in the database.");
+                return NotFound();
+            }
+            _repository.Company.DeleteCompany(company);
+            _repository.Save();
+
+            return NoContent();
         }
     }
 }
