@@ -15,12 +15,12 @@ namespace Repository
     //By inheriting from the RepositoryBase class, they will have access to all
     //the methods from it.Furthermore, every user class will have its interface
     //for additional model-specific methods
-                                    //Hereda                  //Implementa
+    //Hereda                  //Implementa
     public class CompanyRepository : RepositoryBase<Company>, ICompanyRepository
     {
-        public CompanyRepository(RepositoryContext repositoryContext): base(repositoryContext) 
-        { 
-        
+        public CompanyRepository(RepositoryContext repositoryContext) : base(repositoryContext)
+        {
+
         }
         public IEnumerable<Company> GetAllCompanies(bool trackChanges) =>
             FindAll(trackChanges).OrderBy(c => c.Name).ToList();
@@ -30,5 +30,8 @@ namespace Repository
             .SingleOrDefault();
 
         public void CreateCompany(Company company) => Create(company);
+
+        public IEnumerable<Company> GetByIds(IEnumerable<Guid> ids, bool trackChanges) =>
+            FindByCondition(x => ids.Contains(x.Id), trackChanges).ToList();
     }
 }
