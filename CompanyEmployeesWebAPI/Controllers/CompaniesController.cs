@@ -14,6 +14,7 @@ using Entities.DataTransferObjects;
 using AutoMapper;
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
+using Entities.Models;
 
 namespace CompanyEmployeesWebAPI.Controllers
 {
@@ -62,26 +63,27 @@ namespace CompanyEmployeesWebAPI.Controllers
         {
             //try
             //{
-                var companies = _repository.Company.GetAllCompanies(trackChanges: false);
-                //var companiesdto = companies.select(c => new companydto
-                //{
-                //    id = c.id,
-                //    name = c.name,
-                //    fulladdress = string.join(" ", c.address, c.country)
-                //}).tolist();
-                var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
-                return Ok(companiesDto);
+            var companies = _repository.Company.GetAllCompanies(trackChanges: false);
+            //var companiesdto = companies.select(c => new companydto
+            //{
+            //    id = c.id,
+            //    name = c.name,
+            //    fulladdress = string.join(" ", c.address, c.country)
+            //}).tolist();
+            var companiesDto = _mapper.Map<IEnumerable<CompanyDto>>(companies);
+            return Ok(companiesDto);
             //}
             //catch (Exception ex)
             //{
             //    _logger.LogError($"comething went wrong in the {nameof(GetCompanies)} action {ex}");
             //    return StatusCode(500, "internal server error");
             //}
-           
+
 
         }
 
-        [HttpGet("{id}")]
+        //we are setting the name for the action
+        [HttpGet("{id}", Name = "CompanyById")]
         public IActionResult GetCompany(Guid id)
         {
             var company = _repository.Company.GetCompany(id, trackChanges: false);
@@ -95,6 +97,23 @@ namespace CompanyEmployeesWebAPI.Controllers
                 var companyDto = _mapper.Map<CompanyDto>(company);
                 return Ok(companyDto);
             }
+        }
+
+        [HttpPost]
+        public IActionResult CreateCompany([FromBody] CompanyForCreatingDto company)
+        {
+            if (company == null)
+            {
+                _logger.LogError("CompanyForCreationDto object sent from client is null");
+                return BadRequest("CompanyForCreationDto object is null");
+            }
+            var companyEntity = _mapper.Map<Company>(company);
+            _repository.Company.CreateCompany(companyEntity);
+            _repository.Save();
+
+            var companyToReturn = _mapper.Map<CompanyDto>(companyEntity);
+
+            return CreatedAtRoute("CompanyById", new { id = companyToReturn.Id }, companyToReturn);
         }
     }
 }

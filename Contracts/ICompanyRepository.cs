@@ -12,5 +12,6 @@ namespace Contracts
         //action method to return all the companies
         IEnumerable<Company> GetAllCompanies(bool trackChanges);
         Company GetCompany(Guid companyId, bool trackChanges);
+        void CreateCompany(Company company);
     }
 }

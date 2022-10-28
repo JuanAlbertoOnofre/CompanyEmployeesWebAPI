@@ -14,6 +14,10 @@ namespace CompanyEmployeesWebAPI.Mappings
 
             //create another mapping rule
             CreateMap<Employee, EmployeeDto>();
+
+            CreateMap<CompanyForCreatingDto, Company>();
+
+            CreateMap<EmployeeForCreatingDto, Employee>();
         }
     }
 }
